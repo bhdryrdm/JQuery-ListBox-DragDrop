@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Jquery Listbox Drag&Drop</title>
+        
+        <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
+        <link rel="stylesheet" type="text/css" href="stylesheets/jquery-ui.css" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+        
+        <script src="scripts/jquery-1.10.2.js"></script>
+        <script src="scripts/jquery-ui.js"></script>
+        <script src="fieldChooser.js"></script>
+        
+        <script>
+            $(document).ready(function () {
+                var $sourceFields = $("#sourceFields");
+                var $destinationFields = $("#destinationFields");
+                var $chooser = $("#fieldChooser").fieldChooser(sourceFields, destinationFields);
+            });
+
+            function get_selected_user(){
+                let selected_user_div = $('div.fc-selected')[0];
+                if(selected_user_div){
+                    let selected_user_id = $(selected_user_div).data('user-id');
+                    let selected_user_name = $($('div.fc-selected > .user-name')[0]).html();
+                    alert('Selected User : ' + selected_user_id + ' ' + selected_user_name);
+                }
+            }
+
+            function get_selected_users(){
+                $.each($('#destinationFields').find('[data-user-id]'), function(index, item){
+                    console.log($(item).data('user-id') + ' ' + $(item)[0].childNodes[3].innerHTML);
+                });
+            }
+
+            function select_all_user(){
+                $.each($('#sourceFields').find('[data-user-id]'), function(index, item){
+                    $(item).detach().appendTo('#destinationFields');
+                });
+            }
+
+            function unselect_all_user(){
+                $.each($('#destinationFields').find('[data-user-id]'), function(index, item){
+                    $(item).detach().appendTo('#sourceFields');
+                });
+            }
+        </script>
+    </head>
+    <body>
+        <div id="fieldChooser" tabIndex="1">
+            <div id="sourceFields">
+                <div data-user-id='1'>
+                    <img src="img/bhdryrdm.jpeg" /> 
+                    <div class='user-name'>Bahadır Yardım</div> 
+                    <div class='job-title'>Software Developer</div>
+                </div>
+                <div data-user-id='2'>
+                    <img src="img/ronaldo.png" /> 
+                    <div class='user-name'>Cristiano Ronaldo</div> 
+                    <div class='job-title'>Football Player</div>
+                </div>
+                <div data-user-id='3'>
+                    <img src="img/jeniffer.jpg" /> 
+                    <div class='user-name'>Jeniffer Lopez</div> 
+                    <div class='job-title'>Actress</div>
+                </div>
+                <div data-user-id='4'>
+                    <img src="img/steve-jobs.jpg" /> 
+                    <div class='user-name'>Steve Jobs</div> 
+                    <div class='job-title'>CEO at Apple</div>
+                </div>
+            </div>
+                
+            <div style="margin-left:20px;" class="btn-group-vertical" role="group" aria-label="Vertical button group">
+                <button type="button" onclick="get_selected_user();" class="btn btn-sm btn-outline-primary m-t-5"><i class="fa fa-user"></i></button>
+                <button type="button" onclick="get_selected_users();" class="btn btn-sm btn-outline-primary m-t-5"><i style="width : 14px; margin-left : -2px;" class="fa fa-users"></i></button>
+                <button type="button" onclick="select_all_user();" class="btn btn-sm btn-outline-success m-t-5"><i class="fa fa-angle-double-right"></i></button>
+                <button type="button" onclick="unselect_all_user();" class="btn btn-sm btn-outline-danger m-t-5"><i class="fa fa-angle-double-left"></i></button>
+            </div>
+
+            <div id="destinationFields">
+            </div>
+        </div>
+    </body>
+</html>
